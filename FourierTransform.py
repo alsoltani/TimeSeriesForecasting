@@ -71,8 +71,8 @@ if __name__ == "__main__":
 
     # Regression.
 
-    x_train, x_val, y_train, y_val = train_test_split(
-        x.dot(basis), y, test_size=0.2, random_state=0)
+    """x_train, x_val, y_train, y_val = train_test_split(
+        x.dot(basis), y, test_size=0.97, random_state=0)
 
     print "Training set :\n", x_train.shape, "\n", y_train.shape
     print "Validation set :\n", x_val.shape, "\n", y_val.shape
@@ -88,11 +88,26 @@ if __name__ == "__main__":
 
     reg = GridSearchCV(RandomForestRegressor(n_estimators=50, n_jobs=-1),
                        param_grid=reg_grid, n_jobs=-1, verbose=5)
+
     reg.fit(x_train, y_train)
-    y_val_pred = reg.predict(x_val)
 
     params = reg.best_params_
     print "Best params:\n", params
+
+    best_params = {'bootstrap': True,
+                   'max_depth': 10,
+                   'max_features': 20,
+                   'min_samples_leaf': 1,
+                   'min_samples_split': 1}
+    """
+
+    #
+    x_train, x_val, y_train, y_val = train_test_split(
+        x.dot(basis), y, test_size=0.2, random_state=0)
+    reg = RandomForestRegressor(bootstrap=True, max_depth=10, max_features=20,
+                                min_samples_leaf=1, min_samples_split=1)
+    reg.fit(x_train, y_train)
+    y_val_pred = reg.predict(x_val)
 
     # MAPE.
 
